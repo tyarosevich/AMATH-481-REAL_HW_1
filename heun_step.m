@@ -1,10 +1,10 @@
 function y = heuns(y0, xspan, E, delta)
-for n = length(xspan)
-    
-    y_prime = shoot(y0,xspan(n),E)
-    y_step = y0 + delta * y_prime;
-    y = y0 + delta/2 * (shoot(y_prime,xspan(n+1),E) + y0);
-    y = y0
+y = zeros(2,81);
+y(:,1) = y0;
+
+for n = 1:(length(xspan)-1)
+    y_prime = shoot(y(:,n),xspan(n),E);
+    y_step = y(:,n) + delta * y_prime;
+    y(:,n+1) = y(:,n) + delta/2 * (shoot(y_step,xspan(n) + delta,E) + y_prime);
 
 end
-% work in progress. THis has to run the entire stepping scheme to L.
