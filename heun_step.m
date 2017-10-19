@@ -1,5 +1,5 @@
 function y = heuns(y0, xspan, E, delta)
-y = zeros(2,81);
+y = zeros(2,length(xspan));
 y(:,1) = y0;
 
 for n = 1:(length(xspan)-1)
