@@ -31,8 +31,8 @@ for modes = 1:5
     end
     E_start = E + Edelta;
 end
-A1 = abs(solution_values(1,:))';
-A2 = solution_eigs;
+A1 = abs(solution_values(1,:));
+A2 = solution_eigs';
 save A1.dat A1 -ascii
 save A2.dat A2 -ascii
 %% HW 1 Part 2 a.)
@@ -110,5 +110,42 @@ end
 A4 = solution_eigs(:,3);
 save A4.dat A4 -ascii
 %% HW 1 Part 3
+clc; clear all; close all;
+tol_list = [1e-5 1e-6 1e-7 1e-8 1e-9 1e-10 1e-11]';
+L = 2; y0 = [sqrt(3);3];E = 1; tspan = [-L L];
+ode45_avg_step = zeros(7, 1);
+for n = 1:length(tol_list)
+    tol = tol_list(n) ; options = odeset('RelTol',tol,'AbsTol',tol);
+    [T, Y] = ode45('shoot2', tspan, y0, options); 
+    ode45_avg_step(n,1) = log(mean(diff(T)));
+end
 
+ode23_avg_step = zeros(7, 1);
+for n = 1:length(tol_list)
+    tol = tol_list(n) ; options = odeset('RelTol',tol,'AbsTol',tol);
+    [T, Y] = ode23('shoot2', tspan, y0, options); 
+    ode23_avg_step(n,1) = log(mean(diff(T)));
+end
 
+ode113_avg_step = zeros(7, 1);
+for n = 1:length(tol_list)
+    tol = tol_list(n) ; options = odeset('RelTol',tol,'AbsTol',tol);
+    [T, Y] = ode113('shoot2', tspan, y0, options); 
+    ode113_avg_step(n,1) = log(mean(diff(T)));
+end
+
+ode15s_avg_step = zeros(7, 1);
+for n = 1:length(tol_list)
+    tol = tol_list(n) ; options = odeset('RelTol',tol,'AbsTol',tol);
+    [T, Y] = ode15s('shoot2', tspan, y0, options); 
+    ode15s_avg_step(n,1) = log(mean(diff(T)));
+end
+step_list = [ode45_avg_step ode23_avg_step ode113_avg_step ode15s_avg_step];
+log_tol_list = log(tol_list);
+slope_list = zeros(4,1);
+for n = 1:4
+    p = polyfit(step_list(:,n), log_tol_list, 1);
+    slope_list(n,1) = p(1);
+end
+A5 = slope_list;
+save A5.dat A5 -ascii
