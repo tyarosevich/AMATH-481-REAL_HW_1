@@ -32,7 +32,7 @@ for modes = 1:5
     E_start = E + Edelta;
 end
 A1 = abs(solution_values(1,:));
-A2 = solution_eigs';
+A2 = solution_eigs;
 save A1.dat A1 -ascii
 save A2.dat A2 -ascii
 %% HW 1 Part 2 a.)
