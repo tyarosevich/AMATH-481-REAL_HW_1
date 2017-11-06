@@ -29,7 +29,7 @@ for modes = 1:5
             Edelta = Edelta/2;
         end
     end
-    E_start = E + Edelta;
+    E_start = E + Edelta; % This should be updated by the original Edelta not this modified one.
 end
 A1 = abs(solution_values(1,:));
 A2 = solution_eigs;
